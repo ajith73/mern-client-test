@@ -1,70 +1,194 @@
-# Getting Started with Create React App
+# MERN Friend List Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based client application for managing a friend list with full CRUD operations. This is the frontend component of a MERN stack application that connects to a Node.js/Express backend API.
 
-## Available Scripts
+## Project Overview
 
-In the project directory, you can run:
+This application provides a simple and intuitive interface for managing a list of friends. Users can add new friends with their name and age, view the complete friend list, update friend information, and remove friends from the list. The application communicates with a RESTful API hosted on Heroku to perform all data operations.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Add Friends**: Create new friend entries with name and age
+- **View Friends**: Display a complete list of all friends with their details
+- **Update Friends**: Modify friend information (specifically age) using a prompt interface
+- **Delete Friends**: Remove friends from the list with a single click
+- **Real-time Updates**: Automatic fetching of friend list on component mount
+- **Responsive UI**: Clean and simple interface with basic styling
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Architecture Diagram
 
-### `npm test`
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     React Client Application                  │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │  App.js (Main Component)                                │ │
+│  │  - State Management (name, age, friendList)            │ │
+│  │  - CRUD Operations (add, read, update, delete)         │ │
+│  │  - UI Rendering                                          │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                            │                                  │
+│                            │ Axios HTTP Client               │
+│                            ▼                                  │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            │ HTTP Requests
+                            │ (GET, POST, PUT, DELETE)
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Backend API (Heroku-hosted)                     │
+│         https://mernapptest123.herokuapp.com                 │
+│                                                              │
+│  Endpoints:                                                  │
+│  - GET    /read          - Fetch all friends                │
+│  - POST   /addFriend     - Add new friend                   │
+│  - PUT    /update        - Update friend age                │
+│  - DELETE /delete/:id    - Delete friend by ID              │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    MongoDB Database                          │
+│              (Stores friend documents)                       │
+└─────────────────────────────────────────────────────────────┘
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Tech Stack
 
-### `npm run build`
+### Frontend
+- **React 18.1.0** - UI library for building the user interface
+- **React DOM 18.1.0** - React renderer for the web
+- **Axios 0.27.2** - HTTP client for making API requests
+- **CSS3** - Styling and layout
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Development Tools
+- **Create React App 5.0.1** - Build tool and development environment
+- **React Scripts 5.0.1** - Scripts for running, testing, and building
+- **Testing Library** - Jest, React Testing Library for unit testing
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Backend (External)
+- **Node.js/Express API** - RESTful API hosted on Heroku
+- **MongoDB** - NoSQL database for data persistence
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Setup Instructions
 
-### `npm run eject`
+### Prerequisites
+- Node.js (v14 or higher recommended)
+- npm or yarn package manager
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Installation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd mern-client-test
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. **Start the development server**
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
 
-## Learn More
+4. **Open in browser**
+   The application will automatically open at [http://localhost:3000](http://localhost:3000)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Available Scripts
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- `npm start` - Runs the app in development mode
+- `npm test` - Launches the test runner in interactive watch mode
+- `npm run build` - Builds the app for production to the `build` folder
+- `npm run eject` - Ejects from Create React App (one-way operation)
 
-### Code Splitting
+### Environment Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The application is configured to connect to the Heroku-hosted backend API. To use a different backend, modify the API endpoints in `src/App.js`:
 
-### Analyzing the Bundle Size
+```javascript
+// Current backend URL
+const API_BASE = "https://mernapptest123.herokuapp.com";
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+// Update endpoints as needed:
+axios.post(`${API_BASE}/addFriend`, { ... })
+axios.get(`${API_BASE}/read`)
+axios.put(`${API_BASE}/update`, { ... })
+axios.delete(`${API_BASE}/delete/${id}`)
+```
 
-### Making a Progressive Web App
+## API Examples
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Get All Friends
+```javascript
+axios.get("https://mernapptest123.herokuapp.com/read")
+  .then((res) => {
+    console.log(res.data); // Array of friend objects
+  })
+```
 
-### Advanced Configuration
+### Add New Friend
+```javascript
+axios.post("https://mernapptest123.herokuapp.com/addFriend", {
+  name: "John Doe",
+  age: 25
+}).then((response) => {
+  console.log(response.data); // Created friend object with _id
+})
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Update Friend Age
+```javascript
+axios.put("https://mernapptest123.herokuapp.com/update", {
+  newage: 26,
+  id: "friend_id_here"
+}).then(() => {
+  console.log("Friend updated successfully");
+})
+```
 
-### Deployment
+### Delete Friend
+```javascript
+axios.delete(`https://mernapptest123.herokuapp.com/delete/${friendId}`)
+  .then(() => {
+    console.log("Friend deleted successfully");
+  })
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Project Structure
 
-### `npm run build` fails to minify
+```
+mern-client-test/
+├── public/
+│   ├── _redirects          # Netlify/Heroku redirect configuration
+│   ├── index.html           # HTML template
+│   └── favicon.ico          # Application icon
+├── src/
+│   ├── App.js               # Main application component
+│   ├── App.css              # Component styles
+│   ├── App.test.js          # Component tests
+│   ├── index.js             # Application entry point
+│   └── reportWebVitals.js   # Performance metrics
+├── package.json             # Project dependencies
+└── README.md                # Project documentation
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Deployment
+
+This application can be deployed to various platforms:
+
+- **Netlify**: Supports the `_redirects` file for SPA routing
+- **Vercel**: Automatic React deployment
+- **Heroku**: Can be deployed as a static site
+- **GitHub Pages**: Free hosting for static sites
+
+To deploy, run:
+```bash
+npm run build
+```
+Then deploy the contents of the `build/` folder to your chosen platform.
